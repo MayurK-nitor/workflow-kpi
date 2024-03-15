@@ -1,1 +1,40 @@
-nothing
+{
+    "triggers": {
+         "HariTest": {
+              "type": "EVENT",
+              "topic": "workflow:HariTest"
+         }
+    },
+    "workflow": {
+         "name": "TestWorkflowWithHiCheck",
+         "description": "Check if inputs provided is hi or not",
+         "startAt": "CheckNameValue",
+         "states": {
+              "CheckNameValue": {
+                   "type": "GraphQLTask",
+                   "next": "EndWorkflow",
+                   "config": {
+                        "endpoint": "CUSTOM_FORMS_GRAPHQL_ENDPOINT",
+                        "variables": {
+                             "output_type": "json",
+                             "json_transformation_expressions": "{\"'name'\": \"'@convert_list_to_string($.input.name)'\"}",
+                             "canonical_data": "$.(json_dumps('$.input'))"
+                        },
+                        "convertJsonOutput": true,
+                        "sharedTenantTokens": [
+                             "$.organization_id"
+                        ],
+                        "query": "query getJSONTransformation($canonical_data:AWSJSON, $json_transformation_expressions:AWSJSON!, $output_type:String) { getJSONTransformation(canonical_data: $canonical_data, json_transformation_expressions: $json_transformation_expressions, output_type: $output_type)}",
+                        "operationName": "getJSONTransformation",
+                        "xApiKey": "CUSTOM_FORMS_API_KEY",
+                        "createdByTenantId": "$.organization_id",
+                        "token": "CUSTOM_FORMS_TOKEN"
+                   }
+              },
+              "EndWorkflow": {
+                   "type": "PassTask",
+                   "end": true
+              }
+         }
+    }
+}
