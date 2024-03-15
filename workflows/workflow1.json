@@ -7,7 +7,7 @@
      },
      "workflow": {
           "name": "TestWorkflowWithHiCheck",
-          "description": "Trial 3 Check if inputs provided is hi or hello or not",
+          "description": "Trial 4 Check if inputs provided is hi or hello or not",
           "startAt": "CheckNameValue",
           "states": {
                "CheckNameValue": {
